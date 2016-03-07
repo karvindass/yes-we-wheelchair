@@ -1,0 +1,22 @@
+<launch>
+<node ns="camera" pkg="uvc_camera" type="uvc_camera_node" name="uvc_camera" output="screen">
+    <param name="width" type="int" value="640" />
+    <param name="height" type="int" value="480" />
+    <param name="fps" type="int" value="30" />
+    <param name="frame" type="string" value="webcam" />
+    <param name="device" type="string" value="/dev/video1" />
+  </node> 
+
+
+<node pkg="sicktoolbox_wrapper" type="sicklms" name="sicklms" output="screen">
+<param name="port" type="string" value="/dev/ttyUSB0" />
+<param name="baud" type="int" value="19200" />
+  </node>
+
+<node pkg="rviz" type="rviz" name="rviz" output="screen"/>
+
+
+	<node pkg="tf" type="static_transform_publisher" 	 name="link1_broadcaster" args="0 .1 0 0 -1.5708  1.5708 camera laser 100" />
+
+
+</launch>

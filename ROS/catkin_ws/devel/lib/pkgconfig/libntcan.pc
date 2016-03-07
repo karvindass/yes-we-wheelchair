@@ -1,0 +1,8 @@
+prefix=/home/wes/catkin_ws/devel
+
+Name: libntcan
+Description: Description of libntcan
+Version: 0.6.0
+Cflags: -I/home/wes/catkin_ws/src/cob_extern/libntcan/common/include -I/home/wes/catkin_ws/src/cob_extern/libntcan/common/include/libntcan
+Libs: -L/home/wes/catkin_ws/devel/lib -lntcan
+Requires: 

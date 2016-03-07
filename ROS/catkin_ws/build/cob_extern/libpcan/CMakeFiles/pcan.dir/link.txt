@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC    -shared -Wl,-soname,libpcan.so -o /home/wes/catkin_ws/devel/lib/libpcan.so  

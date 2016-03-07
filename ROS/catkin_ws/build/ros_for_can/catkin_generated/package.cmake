@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "ros_for_can")
+set(ros_for_can_MAINTAINER "yushan <yushan@todo.todo>")
+set(ros_for_can_DEPRECATED "")
+set(ros_for_can_VERSION "0.0.0")
+set(ros_for_can_BUILD_DEPENDS "libpcan" "roscpp")
+set(ros_for_can_RUN_DEPENDS "libpcan" "roscpp")
+set(ros_for_can_BUILDTOOL_DEPENDS "catkin")

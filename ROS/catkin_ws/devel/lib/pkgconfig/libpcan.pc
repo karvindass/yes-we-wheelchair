@@ -1,0 +1,8 @@
+prefix=/home/wes/catkin_ws/devel
+
+Name: libpcan
+Description: Description of libpcan
+Version: 0.6.0
+Cflags: -I/home/wes/catkin_ws/src/cob_extern/libpcan/common/include -I/home/wes/catkin_ws/src/cob_extern/libpcan/common/include/libpcan
+Libs: -L/home/wes/catkin_ws/devel/lib -lpcan
+Requires: 

@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="tf" type="static_transform_publisher" 	 name="link1_broadcaster" args="0 .2 0 0 -1.5708  1.5708 camera laser 100" />
+
+</launch>
+<!--"0 0 0 .707107  0 0 .707107 camera laser 100" -->

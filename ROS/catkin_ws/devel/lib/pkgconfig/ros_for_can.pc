@@ -1,0 +1,8 @@
+prefix=/home/wes/catkin_ws/devel
+
+Name: ros_for_can
+Description: Description of ros_for_can
+Version: 0.0.0
+Cflags: -I/home/wes/catkin_ws/src/ros_for_can/include
+Libs: -L/home/wes/catkin_ws/devel/lib -lros_for_can
+Requires: libpcan roscpp
