@@ -21,14 +21,17 @@
 
 #include <ros/ros.h>
 #include <tf/transform_broadcaster.h>
-#include <nav_msgs/Odometry.h>
+//#include <nav_msgs/Odometry.h>
+#include <std_msgs/Int32.h>
+
 
 int main(int argc, char** argv){
-  ros::init(argc, argv, "odometry_publisher");
+  //ros::init(argc, argv, "odometry_publisher");
+  ros::init(argc, argv, "encoder_data_in")
 
   ros::NodeHandle n;
-  ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
-  tf::TransformBroadcaster odom_broadcaster;
+  //ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
+  //tf::TransformBroadcaster odom_broadcaster;
 
   // variables to be connected to input from the arduinos
   int inptLeft = 0;
@@ -85,6 +88,12 @@ int main(int argc, char** argv){
         }
     }
 
+
+
+    // below is odometry package specific code
+
+
+    /**
     //since all odometry is 6DOF we'll need a quaternion created from yaw
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
 
@@ -107,6 +116,7 @@ int main(int argc, char** argv){
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
 
+The Code Expl
     //set the position
     odom.pose.pose.position.x = x;
     odom.pose.pose.position.y = y;
@@ -126,5 +136,6 @@ int main(int argc, char** argv){
 
     last_time = current_time;
     r.sleep();
+    **/
   }
 }
