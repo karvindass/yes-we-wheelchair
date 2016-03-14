@@ -136,6 +136,7 @@ The Code Expl
 
     last_time = current_time;
     r.sleep();
+    dummy;
     **/
   }
 }
