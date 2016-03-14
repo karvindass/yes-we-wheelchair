@@ -28,14 +28,20 @@
 // %Tag(FULLTEXT)%
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include <tf/transform_broadcaster.h>
+#include <std_msgs/Int32.h>
 
-/**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
- */
+// EncoderTopic
+// Lidar
 // %Tag(CALLBACK)%
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
   ROS_INFO("I heard: [%s]", msg->data.c_str());
+	// where info for Enc0 will be extracted
+}
+void Enc1Callback(const std_msgs::Int32::ConstPtr& msg)
+{
+	// where calculations will be made
 }
 // %EndTag(CALLBACK)%
 
@@ -51,7 +57,7 @@ int main(int argc, char **argv)
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
-  ros::init(argc, argv, "listener");
+  ros::init(argc, argv, "OdomDataCreator");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
