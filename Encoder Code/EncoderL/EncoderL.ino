@@ -1,6 +1,6 @@
 //ros dependency files
 #include <ros.h>
-#include <std_msgs/Int32.h>
+#include <std_msgs/Int32multiarray.h>
 
 // defines pins we will be pulling input from
 #define encoderLPinA 1
@@ -9,7 +9,13 @@
 //stores the interups encountered by encoder during time interval 100
 //volatile int encoderLCount = 0;
 
+//arrays storing encoder id [0] and encoder count [1]
+int[] array = [2];
+array[0] = 0;
+
 //testing variables
+
+ 
 int dummy = 0;
 int encoderLCount = 0;
 
@@ -18,7 +24,8 @@ unsigned long previousTime = 0; // var used to check interval - compared to curr
 
 ros::NodeHandle nh;
 
-std_msgs::Int32 int_msg;
+std_msgs::Int32MultiArray std_msgs;
+//&int_msg --
 ros::Publisher encoderL("EncoderL" ,&int_msg);
 
 void setup() {
@@ -49,8 +56,11 @@ void loop()
       // testing purpose 
       dummy += 1;
       encoderLCount = dummy;
+
+      array[1] = encoderLCount;
       
       int_msg.data = encoderLCount;
+      
       encoderL.publish( &int_msg);
       nh.spinOnce();
       encoderLCount = 0;
