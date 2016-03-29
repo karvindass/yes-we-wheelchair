@@ -1,21 +1,16 @@
 //ros dependency files
 #include <ros.h>
-#include <std_msgs/Int32multiarray.h>
+#include <std_msgs/Int32.h>
 
 // defines pins we will be pulling input from
 #define encoderLPinA 1
 #define encoderLPinB 2
 
 //stores the interups encountered by encoder during time interval 100
+//######## Below variable is commented out for testing ########
 //volatile int encoderLCount = 0;
 
-//arrays storing encoder id [0] and encoder count [1]
-int[] array = [2];
-array[0] = 0;
-
-//testing variables
-
- 
+//testing variables 
 int dummy = 0;
 int encoderLCount = 0;
 
@@ -24,13 +19,12 @@ unsigned long previousTime = 0; // var used to check interval - compared to curr
 
 ros::NodeHandle nh;
 
-std_msgs::Int32MultiArray std_msgs;
-//&int_msg --
-ros::Publisher encoderL("EncoderL" ,&int_msg);
+std_msgs::Int32 int_msg;
+ros::Publisher encoderL("Encoder" ,&int_msg);
 
 void setup() {
     nh.initNode();
-    nh.advertise(encoderL);
+    nh.advertise(Encoder);
 
     pinMode(encoderLPinA, INPUT_PULLUP); // configuring defined pins as inputs
     pinMode(encoderLPinB, INPUT_PULLUP);
@@ -49,18 +43,20 @@ void doEncoder0() {
 
 void loop()
 {
+  unsigned long currentTime = millis();
   if (currentTime - previousTime > interval) {
       
-      previousTime = currentTime;
-      
-      // testing purpose 
+      // testing code 
       dummy += 1;
       encoderLCount = dummy;
+      //end test code
 
-      array[1] = encoderLCount;
+      // data structure. 
+      // Messages published from this encoder end in 0
+      encoderLCount = (encoderLCount * 10) + 0;
       
-      int_msg.data = encoderLCount;
-      
+      previousTime = currentTime;
+      int_msg.data = encoderLCount;      
       encoderL.publish( &int_msg);
       nh.spinOnce();
       encoderLCount = 0;
