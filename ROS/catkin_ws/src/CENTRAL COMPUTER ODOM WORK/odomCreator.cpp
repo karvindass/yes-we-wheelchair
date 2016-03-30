@@ -29,7 +29,7 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include <tf/transform_broadcaster.h>
-#include <std_msgs/Int32.h>
+#include <std_msgs/Int32MultiArray.h>
 
 // EncoderTopic
 // Lidar
@@ -97,3 +97,56 @@ int main(int argc, char **argv)
   return 0;
 }
 // %EndTag(FULLTEXT)%
+
+
+
+
+// New code
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
+#include <iostream>
+
+#include "ros/ros.h"
+
+#include "std_msgs/MultiArrayLayout.h"
+#include "std_msgs/MultiArrayDimension.h"
+#include "std_msgs/Int32MultiArray.h"
+
+int Arr[2];
+void arrayCallback(const std_msgs::Int32MultiArray::ConstPtr& array);
+
+int main(int argc, char **argv)
+{
+
+	ros::init(argc, argv, "OdomCreator");
+
+	ros::NodeHandle n;	
+
+	ros::Subscriber sub3 = n.subscribe("EncoderL", 100, OdomCallback);
+
+	ros::spinOnce();
+
+	for(j = 1; j < 90; j++)
+	{
+		printf("%d, ", Arr[j]);
+	}
+
+	printf("\n");
+	return 0;
+}
+
+void OdomCallback(const std_msgs::Int32MultiArray::ConstPtr& array)
+{
+
+	int i = 0;
+	// print all the remaining numbers
+	for(std::vector<int>::const_iterator it = array->data.begin(); it != array->data.end(); ++it)
+	{
+		Arr[i] = *it;
+		i++;
+	}
+
+	return;
+}
+
