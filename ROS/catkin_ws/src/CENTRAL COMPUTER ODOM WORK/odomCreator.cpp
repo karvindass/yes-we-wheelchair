@@ -41,7 +41,7 @@
  * This tutorial demonstrates simple sending of messages over the ROS system.
  */
  // function called for each message received on Encoder topic
-void chatterCallback(const std_msgs::String::ConstPtr& msg)
+void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
 	// determine which encoder
 	// make 
