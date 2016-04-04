@@ -24,24 +24,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 // %Tag(FULLTEXT)%
+// %Tag(ROS_HEADER)%
 #include "ros/ros.h"
-#include "std_msgs/String.h"
-#include <tf/transform_broadcaster.h>
-#include <std_msgs/Int32MultiArray.h>
+// %EndTag(ROS_HEADER)%
+// %Tag(MSG_HEADER)%
+#include "std_msgs/Int32.h"
+// %EndTag(MSG_HEADER)%
 
-// EncoderTopic
-// Lidar
-// %Tag(CALLBACK)%
+#include <sstream>
+
+#include <tf/transform_broadcaster.h>
+#include <nav_msgs/Odometry.h>
+
+/**
+ * This tutorial demonstrates simple sending of messages over the ROS system.
+ */
+ // function called for each message received on Encoder topic
 void chatterCallback(const std_msgs::String::ConstPtr& msg)
 {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
-	// where info for Enc0 will be extracted
-}
-void Enc1Callback(const std_msgs::Int32::ConstPtr& msg)
-{
-	// where calculations will be made
+	// determine which encoder
+	// make 
+  
 }
 // %EndTag(CALLBACK)%
 
@@ -57,96 +61,91 @@ int main(int argc, char **argv)
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
-  ros::init(argc, argv, "OdomDataCreator");
+// %Tag(INIT)%
+  ros::init(argc, argv, "OdomCreator");
+// %EndTag(INIT)%
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
    * The first NodeHandle constructed will fully initialize this node, and the last
    * NodeHandle destructed will close down the node.
    */
+// %Tag(NODEHANDLE)%
   ros::NodeHandle n;
+// %EndTag(NODEHANDLE)%
 
   /**
-   * The subscribe() call is how you tell ROS that you want to receive messages
-   * on a given topic.  This invokes a call to the ROS
+   * The advertise() function is how you tell ROS that you want to
+   * publish on a given topic name. This invokes a call to the ROS
    * master node, which keeps a registry of who is publishing and who
-   * is subscribing.  Messages are passed to a callback function, here
-   * called chatterCallback.  subscribe() returns a Subscriber object that you
-   * must hold on to until you want to unsubscribe.  When all copies of the Subscriber
-   * object go out of scope, this callback will automatically be unsubscribed from
-   * this topic.
+   * is subscribing. After this advertise() call is made, the master
+   * node will notify anyone who is trying to subscribe to this topic name,
+   * and they will in turn negotiate a peer-to-peer connection with this
+   * node.  advertise() returns a Publisher object which allows you to
+   * publish messages on that topic through a call to publish().  Once
+   * all copies of the returned Publisher object are destroyed, the topic
+   * will be automatically unadvertised.
    *
-   * The second parameter to the subscribe() function is the size of the message
-   * queue.  If messages are arriving faster than they are being processed, this
-   * is the number of messages that will be buffered up before beginning to throw
-   * away the oldest ones.
+   * The second parameter to advertise() is the size of the message queue
+   * used for publishing messages.  If messages are published more quickly
+   * than we can send them, the number here specifies how many messages to
+   * buffer up before throwing some away.
    */
-// %Tag(SUBSCRIBER)%
-  ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
-// %EndTag(SUBSCRIBER)%
+   ros::Subscriber sub = n.subscribe("Encoder", 1000, chatterCallback);
+// %Tag(PUBLISHER)%
+  ros::Publisher chatter_pub = n.advertise<std_msgs::Int32>("OdomTopic", 1000);
+// %EndTag(PUBLISHER)%
+
+// %Tag(LOOP_RATE)%
+  ros::Rate loop_rate(10);
+// %EndTag(LOOP_RATE)%
 
   /**
-   * ros::spin() will enter a loop, pumping callbacks.  With this version, all
-   * callbacks will be called from within this thread (the main one).  ros::spin()
-   * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
+   * A count of how many messages we have sent. This is used to create
+   * a unique string for each message.
    */
-// %Tag(SPIN)%
-  ros::spin();
-// %EndTag(SPIN)%
+// %Tag(ROS_OK)%
+  while (ros::ok())
+  {
+// %EndTag(ROS_OK)%
+    /**
+     * This is a message object. You stuff it with data, and then publish it.
+     */'
+	 
+	 //following stuff is to be replaced
+// %Tag(FILL_MESSAGE)%
+    std_msgs::String msg;
+
+    std::stringstream ss;
+    ss << "hello world " << count;
+    msg.data = ss.str();
+// %EndTag(FILL_MESSAGE)%
+
+// %Tag(ROSCONSOLE)%
+    ROS_INFO("%s", msg.data.c_str());
+// %EndTag(ROSCONSOLE)%
+
+    /**
+     * The publish() function is how you send messages. The parameter
+     * is the message object. The type of this object must agree with the type
+     * given as a template parameter to the advertise<>() call, as was done
+     * in the constructor above.
+     */
+// %Tag(PUBLISH)%
+    chatter_pub.publish(msg);
+// %EndTag(PUBLISH)%
+
+// %Tag(SPINONCE)%
+    ros::spinOnce();
+// %EndTag(SPINONCE)%
+
+// %Tag(RATE_SLEEP)%
+    loop_rate.sleep();
+// %EndTag(RATE_SLEEP)%
+    ++count;
+  }
+
 
   return 0;
 }
 // %EndTag(FULLTEXT)%
-
-
-
-
-// New code
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <iostream>
-
-#include "ros/ros.h"
-
-#include "std_msgs/MultiArrayLayout.h"
-#include "std_msgs/MultiArrayDimension.h"
-#include "std_msgs/Int32MultiArray.h"
-
-int Arr[2];
-void arrayCallback(const std_msgs::Int32MultiArray::ConstPtr& array);
-
-int main(int argc, char **argv)
-{
-
-	ros::init(argc, argv, "OdomCreator");
-
-	ros::NodeHandle n;	
-
-	ros::Subscriber sub3 = n.subscribe("EncoderL", 100, OdomCallback);
-
-	ros::spinOnce();
-
-	for(j = 1; j < 90; j++)
-	{
-		printf("%d, ", Arr[j]);
-	}
-
-	printf("\n");
-	return 0;
-}
-
-void OdomCallback(const std_msgs::Int32MultiArray::ConstPtr& array)
-{
-
-	int i = 0;
-	// print all the remaining numbers
-	for(std::vector<int>::const_iterator it = array->data.begin(); it != array->data.end(); ++it)
-	{
-		Arr[i] = *it;
-		i++;
-	}
-
-	return;
-}
-
