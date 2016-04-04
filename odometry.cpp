@@ -25,6 +25,11 @@
 #include <std_msgs/Int32.h>
 #include <cmath>
 
+void encoderCallback(const std_msgs::Int32::ConstPtr& msg)
+{
+	
+}
+
 int main(int argc, char** argv){
   //ros::init(argc, argv, "odometry_publisher");
   ros::init(argc, argv, "Encoder")
