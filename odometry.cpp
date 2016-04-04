@@ -23,11 +23,11 @@
 #include <tf/transform_broadcaster.h>
 //#include <nav_msgs/Odometry.h>
 #include <std_msgs/Int32.h>
-
+#include <cmath>
 
 int main(int argc, char** argv){
   //ros::init(argc, argv, "odometry_publisher");
-  ros::init(argc, argv, "encoder_data_in")
+  ros::init(argc, argv, "Encoder")
 
   ros::NodeHandle n;
   //ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
   int inptRight = 0;
 
   double diameter = 0.304; // diameter of the wheel in meters
-  double circ = PI * 0.304; // the circumference of the wheel in meters
+  double circ = M_PI * 0.304; // the circumference of the wheel in meters
   int res = 2500; // resolution of the encoder in (pulse/sec)
 
   //dummy variables to be re-written
@@ -78,14 +78,11 @@ int main(int argc, char** argv){
     y += dy;
     th += dth;
 
-    // use of a while loop added to ensure end value of theta is between 0 and 2PI
-    while(th >= 2 * PI) {
-        // if loop works to ensure theta values stay in range from 0 to 2PI
-        if (th >= 2 * PI) {
-          th -= 2 * PI;
-        } else if (th <= 0) {
-          th += 2 * PI;
-        }
+    // use to ensure end value of theta is between 0 and 2PI
+    if (th >= 2 * M_PI) {
+      th -= 2 * M_PI;
+    } else if (th < 0) {
+      th += 2 * M_PI;
     }
 
 
