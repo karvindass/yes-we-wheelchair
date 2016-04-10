@@ -43,9 +43,16 @@
  // function called for each message received on Encoder topic
 void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
-	// determine which encoder
-	// make 
-  
+	// determine which encoder is sending the message
+  int encoderValue = msg->data;
+  if ((encoderValue % 10) == 0) {
+    // Data is coming in from left encoder
+  }
+  else if((encoderValue % 10) == 1) {
+    // Data is coming in from right encoder
+  }
+	// use ROS_INFO to send information
+  ROS_INFO("%d",msg->data);
 }
 // %EndTag(CALLBACK)%
 
@@ -111,7 +118,7 @@ int main(int argc, char **argv)
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */'
-	 
+
 	 //following stuff is to be replaced
 // %Tag(FILL_MESSAGE)%
     std_msgs::String msg;

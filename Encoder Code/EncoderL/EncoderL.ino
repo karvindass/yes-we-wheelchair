@@ -10,7 +10,7 @@
 //######## Below variable is commented out for testing ########
 //volatile int encoderLCount = 0;
 
-//testing variables 
+//testing variables
 int dummy = 0;
 int encoderLCount = 0;
 
@@ -45,18 +45,18 @@ void loop()
 {
   unsigned long currentTime = millis();
   if (currentTime - previousTime > interval) {
-      
-      // testing code 
+
+      // testing code
       dummy += 1;
       encoderLCount = dummy;
       //end test code
 
-      // data structure. 
+      // data structure.
       // Messages published from this encoder end in 0
       encoderLCount = (encoderLCount * 10) + 0;
-      
+
       previousTime = currentTime;
-      int_msg.data = encoderLCount;      
+      int_msg.data = encoderLCount;
       encoderL.publish( &int_msg);
       nh.spinOnce();
       encoderLCount = 0;
