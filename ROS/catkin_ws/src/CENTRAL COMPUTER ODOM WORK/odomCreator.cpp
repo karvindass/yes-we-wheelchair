@@ -24,6 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+ #include <cmath>
 // %Tag(FULLTEXT)%
 // %Tag(ROS_HEADER)%
 #include "ros/ros.h"
@@ -83,6 +84,17 @@ void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
   // Determine delta x and y
   deltX = deltS * cos(ThetaVal + (deltTheta / 2) );
   deltY = deltS * sin(ThetaVal + (deltTheta / 2) );
+
+  // add to existing values for X, Y and theta
+  XVal += deltX;
+  YVal += deltY;
+  ThetaVal += deltTheta;
+
+  if (ThetaVal >= 2 * M_PI)) {
+    ThetaVal -= 2 * M_PI;
+  } else if (ThetaVal < 0) {
+    ThetaVal += 2 * M_PI;
+  }
 
 	// use ROS_INFO to send information
   ROS_INFO("%d",msg->data);
