@@ -97,7 +97,8 @@ void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
   }
 
 	// use ROS_INFO to send information
-  ROS_INFO("%d",msg->data);
+  ROS_INFO("%d",YVal);
+  // Currently sending only Y value
 }
 // %EndTag(CALLBACK)%
 
@@ -162,42 +163,7 @@ int main(int argc, char **argv)
 // %EndTag(ROS_OK)%
     /**
      * This is a message object. You stuff it with data, and then publish it.
-     */'
-
-	 //following stuff is to be replaced
-// %Tag(FILL_MESSAGE)%
-    std_msgs::String msg;
-
-    std::stringstream ss;
-    ss << "hello world " << count;
-    msg.data = ss.str();
-// %EndTag(FILL_MESSAGE)%
-
-// %Tag(ROSCONSOLE)%
-    ROS_INFO("%s", msg.data.c_str());
-// %EndTag(ROSCONSOLE)%
-
-    /**
-     * The publish() function is how you send messages. The parameter
-     * is the message object. The type of this object must agree with the type
-     * given as a template parameter to the advertise<>() call, as was done
-     * in the constructor above.
      */
-// %Tag(PUBLISH)%
-    chatter_pub.publish(msg);
-// %EndTag(PUBLISH)%
 
-// %Tag(SPINONCE)%
-    ros::spinOnce();
-// %EndTag(SPINONCE)%
-
-// %Tag(RATE_SLEEP)%
-    loop_rate.sleep();
-// %EndTag(RATE_SLEEP)%
-    ++count;
-  }
-
-
-  return 0;
-}
+   }
 // %EndTag(FULLTEXT)%
