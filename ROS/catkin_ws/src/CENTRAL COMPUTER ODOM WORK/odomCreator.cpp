@@ -51,14 +51,23 @@ double wheelDist = 0.9; // distance between wheels
  // function called for each message received on Encoder topic
 void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
-	// determine which encoder is sending the message
+	// flag for which encoder is sending the message
   bool leftEnc = false;
-  int encoderValue = msg->data;
-  if ((encoderValue % 10) == 0) {
+  // changes in X,Y and theta
+  double deltX = 0, deltY = 0, deltTheta = 0, deltS = 0;
+  double deltR = 0, deltL = 0;
+
+  int encoderReturn = msg->data;
+  int encoderValue = (encoderReturn - (encoderReturn % 10)) / 10;
+
+  deltS = (encoderValue / 2) * (circ / res);
+
+  // determine which encoder is sending data
+  if ((encoderReturn % 10) == 0) {
     // Data is coming in from left encoder
     leftEnc = true;
   }
-  else if((encoderValue % 10) == 1) {
+  else if((encoderReturn % 10) == 1) {
     // Data is coming in from right encoder
     leftEnc = false; // redundant but keep
   }
