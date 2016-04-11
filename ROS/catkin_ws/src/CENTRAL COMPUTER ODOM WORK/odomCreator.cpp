@@ -44,12 +44,15 @@
 void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
 	// determine which encoder is sending the message
+  bool leftEnc = false;
   int encoderValue = msg->data;
   if ((encoderValue % 10) == 0) {
     // Data is coming in from left encoder
+    leftEnc = true;
   }
   else if((encoderValue % 10) == 1) {
     // Data is coming in from right encoder
+    leftEnc = false; // redundant but keep
   }
 	// use ROS_INFO to send information
   ROS_INFO("%d",msg->data);
