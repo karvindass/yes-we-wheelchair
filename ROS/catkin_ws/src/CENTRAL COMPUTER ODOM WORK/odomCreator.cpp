@@ -62,6 +62,19 @@ void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
     // Data is coming in from right encoder
     leftEnc = false; // redundant but keep
   }
+
+  // determine change in theta
+  if (leftEnc) {
+    deltTheta = -(circ / res) * encoderValue / wheelDist;
+  }
+  else {
+    deltTheta = (circ / res) * encoderValue / wheelDist;
+  }
+
+  // Determine delta x and y
+  deltX = deltS * cos(ThetaVal + (deltTheta / 2) );
+  deltY = deltS * sin(ThetaVal + (deltTheta / 2) );
+
 	// use ROS_INFO to send information
   ROS_INFO("%d",msg->data);
 }
