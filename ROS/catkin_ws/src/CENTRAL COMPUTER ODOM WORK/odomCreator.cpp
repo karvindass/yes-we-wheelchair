@@ -24,6 +24,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+ #include <cmath>
 // %Tag(FULLTEXT)%
 // %Tag(ROS_HEADER)%
 #include "ros/ros.h"
@@ -37,15 +38,67 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 
-/**
- * This tutorial demonstrates simple sending of messages over the ROS system.
- */
+// include global variables that store values of x,y,z
+double XVal = 0;
+double YVal = 0;
+double ThetaVal = 0;
+
+// include global variables for constants
+double wheelDiameter = 0.304; // diameter of wheel in meters
+double circ = M_PI * wheelDiameter; // circumference of wheel
+int res = 2500; // resolution of the encoder in (pulse/rotation)
+double wheelDist = 0.9; // distance between wheels
+
  // function called for each message received on Encoder topic
 void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
-	// determine which encoder
-	// make 
-  
+	// flag for which encoder is sending the message
+  bool leftEnc = false;
+  // changes in X,Y and theta
+  double deltX = 0, deltY = 0, deltTheta = 0, deltS = 0;
+  double deltR = 0, deltL = 0;
+
+  int encoderReturn = msg->data;
+  int encoderValue = (encoderReturn - (encoderReturn % 10)) / 10;
+
+  deltS = (encoderValue / 2) * (circ / res);
+
+  // determine which encoder is sending data
+  if ((encoderReturn % 10) == 0) {
+    // Data is coming in from left encoder
+    leftEnc = true;
+  }
+  else if((encoderReturn % 10) == 1) {
+    // Data is coming in from right encoder
+    leftEnc = false; // redundant but keep
+  }
+
+  // determine change in theta
+  if (leftEnc) {
+    deltTheta = -(circ / res) * encoderValue / wheelDist;
+  }
+  else {
+    deltTheta = (circ / res) * encoderValue / wheelDist;
+  }
+
+  // Determine delta x and y
+  deltX = deltS * cos(ThetaVal + (deltTheta / 2) );
+  deltY = deltS * sin(ThetaVal + (deltTheta / 2) );
+
+  // add to existing values for X, Y and theta
+  XVal += deltX;
+  YVal += deltY;
+  ThetaVal += deltTheta;
+
+  if (ThetaVal >= 2 * M_PI)) {
+    ThetaVal -= 2 * M_PI;
+  } else if (ThetaVal < 0) {
+    ThetaVal += 2 * M_PI;
+  }
+
+	// use ROS_INFO to send information
+  ROS_INFO("%d",YVal);
+  // Currently sending only Y value
 }
 // %EndTag(CALLBACK)%
 
@@ -110,42 +163,7 @@ int main(int argc, char **argv)
 // %EndTag(ROS_OK)%
     /**
      * This is a message object. You stuff it with data, and then publish it.
-     */'
-	 
-	 //following stuff is to be replaced
-// %Tag(FILL_MESSAGE)%
-    std_msgs::String msg;
-
-    std::stringstream ss;
-    ss << "hello world " << count;
-    msg.data = ss.str();
-// %EndTag(FILL_MESSAGE)%
-
-// %Tag(ROSCONSOLE)%
-    ROS_INFO("%s", msg.data.c_str());
-// %EndTag(ROSCONSOLE)%
-
-    /**
-     * The publish() function is how you send messages. The parameter
-     * is the message object. The type of this object must agree with the type
-     * given as a template parameter to the advertise<>() call, as was done
-     * in the constructor above.
      */
-// %Tag(PUBLISH)%
-    chatter_pub.publish(msg);
-// %EndTag(PUBLISH)%
 
-// %Tag(SPINONCE)%
-    ros::spinOnce();
-// %EndTag(SPINONCE)%
-
-// %Tag(RATE_SLEEP)%
-    loop_rate.sleep();
-// %EndTag(RATE_SLEEP)%
-    ++count;
-  }
-
-
-  return 0;
-}
+   }
 // %EndTag(FULLTEXT)%
