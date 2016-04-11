@@ -24,7 +24,7 @@ ros::Publisher encoderL("Encoder" ,&int_msg);
 
 void setup() {
     nh.initNode();
-    nh.advertise(Encoder);
+    nh.advertise(encoderL);
 
     pinMode(encoderLPinA, INPUT_PULLUP); // configuring defined pins as inputs
     pinMode(encoderLPinB, INPUT_PULLUP);

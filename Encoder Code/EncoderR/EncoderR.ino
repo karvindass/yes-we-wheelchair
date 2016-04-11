@@ -10,7 +10,7 @@
 //######## Below variable is commented out for testing ########
 //volatile int encoderRCount = 0;
 
-//testing variables 
+//testing variables
 int dummy = 0;
 int encoderRCount = 0;
 
@@ -20,11 +20,11 @@ unsigned long previousTime = 0; // var used to check interval - compared to curr
 ros::NodeHandle nh;
 
 std_msgs::Int32 int_msg;
-ros::Publisher chatter("Encoder" ,&int_msg);
+ros::Publisher encoderR("Encoder" ,&int_msg);
 
 void setup() {
     nh.initNode();
-    nh.advertise(Encoder);
+    nh.advertise(encoderR);
 
     pinMode(encoderRPinA, INPUT_PULLUP); // configuring defined pins as inputs
     pinMode(encoderRPinB, INPUT_PULLUP);
@@ -45,16 +45,16 @@ void loop()
 {
   unsigned long currentTime = millis();
   if (currentTime - previousTime > interval) {
-      
-      // testing code 
+
+      // testing code
       dummy += 1;
       encoderRCount = dummy;
       //end test code
-      
-      // data structure. 
+
+      // data structure.
       // Messages published from this encoder end in 1
       encoderRCount = (encoderRCount * 10) + 1;
-      
+
       previousTime = currentTime;
       int_msg.data = encoderRCount;
       chatter.publish( &int_msg);
