@@ -37,9 +37,17 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 
-/**
- * This tutorial demonstrates simple sending of messages over the ROS system.
- */
+// include global variables that store values of x,y,z
+double XVal = 0;
+double YVal = 0;
+double ThetaVal = 0;
+
+// include global variables for constants
+double wheelDiameter = 0.304; // diameter of wheel in meters
+double circ = M_PI * wheelDiameter; // circumference of wheel
+int res = 2500; // resolution of the encoder in (pulse/rotation)
+double wheelDist = 0.9; // distance between wheels
+
  // function called for each message received on Encoder topic
 void chatterCallback(const std_msgs::Int32::ConstPtr& msg)
 {
